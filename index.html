@@ -247,6 +247,16 @@
       font-weight: 700;
       color: var(--text);
       line-height: 1.3;
+      display: flex;
+      align-items: center;
+    }
+
+    .flag-emoji {
+      font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "Twemoji Mozilla", sans-serif;
+      font-size: 28px;
+      line-height: 1;
+      margin-left: 8px;
+      flex-shrink: 0;
     }
 
     .card-title-en {
@@ -722,7 +732,7 @@
           <div class="continent-tag ${getContinentClass(c.continent)}"></div>
           <div class="card-header">
             <div>
-              <div class="card-title"><span style="font-size:24px;margin-left:6px">${c.flag}</span>${c.name}</div>
+              <div class="card-title"><span class="flag-emoji">${c.flag}</span>${c.name}</div>
               <div class="card-title-en">${c.nameEn}</div>
             </div>
             <span class="card-badge ${c.unRecognized ? 'badge-recognized' : 'badge-unrecognized'}">
