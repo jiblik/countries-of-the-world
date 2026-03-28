@@ -28,12 +28,17 @@
       --radius-sm: 10px;
     }
 
+    html {
+      overflow-x: hidden;
+    }
+
     body {
       font-family: 'Noto Sans Hebrew', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     /* Header */
@@ -204,7 +209,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
       gap: 16px;
     }
 
@@ -433,27 +438,91 @@
     /* Responsive */
     @media (max-width: 768px) {
       .header-inner, .controls, .stats-bar, .container {
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .header {
+        padding: 16px 0;
+      }
+
+      .header h1 {
+        font-size: 20px;
+      }
+
+      .header p {
+        font-size: 12px;
       }
 
       .grid {
         grid-template-columns: 1fr;
+        gap: 12px;
       }
 
       .controls {
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
+        margin: 16px auto;
       }
 
       .search-box {
         min-width: unset;
       }
 
+      .search-box input {
+        padding: 10px 16px 10px 40px;
+        font-size: 14px;
+      }
+
       .filter-btns {
         overflow-x: auto;
         flex-wrap: nowrap;
-        padding-bottom: 4px;
+        padding-bottom: 6px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        max-width: 100%;
+      }
+
+      .filter-btns::-webkit-scrollbar {
+        display: none;
+      }
+
+      .filter-btn {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+
+      .card {
+        padding: 18px 16px;
+        border-radius: 12px;
+      }
+
+      .card-title {
+        font-size: 16px;
+      }
+
+      .card-badge {
+        margin-right: 8px;
+      }
+
+      .info-row {
+        font-size: 13px;
+      }
+
+      .info-icon {
+        width: 28px;
+        height: 28px;
+      }
+
+      .info-icon svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .map-link {
+        font-size: 12px;
+        padding: 7px 12px;
       }
 
       .list-view .card {
@@ -461,8 +530,15 @@
         gap: 10px;
       }
 
-      .header h1 {
-        font-size: 22px;
+      .stats-bar {
+        margin-bottom: 14px;
+      }
+
+      .scroll-top {
+        bottom: 20px;
+        left: 20px;
+        width: 40px;
+        height: 40px;
       }
     }
 
