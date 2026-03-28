@@ -251,12 +251,14 @@
       align-items: center;
     }
 
-    .flag-emoji {
-      font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "Twemoji Mozilla", sans-serif;
-      font-size: 28px;
-      line-height: 1;
+    .flag-img {
+      width: 32px;
+      height: 24px;
       margin-left: 8px;
       flex-shrink: 0;
+      border-radius: 3px;
+      object-fit: cover;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
 
     .card-title-en {
@@ -732,7 +734,7 @@
           <div class="continent-tag ${getContinentClass(c.continent)}"></div>
           <div class="card-header">
             <div>
-              <div class="card-title"><span class="flag-emoji">${c.flag}</span>${c.name}</div>
+              <div class="card-title">${c.code ? '<img class="flag-img" src="https://flagcdn.com/w80/' + c.code + '.png" alt="' + c.nameEn + ' flag" loading="lazy">' : '<span style="width:32px;height:24px;display:inline-flex;align-items:center;justify-content:center;background:#f1f5f9;border-radius:3px;margin-left:8px;font-size:14px;flex-shrink:0">🏴</span>'}${c.name}</div>
               <div class="card-title-en">${c.nameEn}</div>
             </div>
             <span class="card-badge ${c.unRecognized ? 'badge-recognized' : 'badge-unrecognized'}">
