@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מדינות העולם</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --text: #1a1a2e;
+      --text-secondary: #64748b;
+      --accent: #6366f1;
+      --accent-light: #eef2ff;
+      --border: #e2e8f0;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    body {
+      font-family: 'Noto Sans Hebrew', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 24px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      background: rgba(255,255,255,0.92);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    /* Controls */
+    .controls {
+      max-width: 1400px;
+      margin: 24px auto;
+      padding: 0 32px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 20px 12px 44px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Noto Sans Hebrew', sans-serif;
+      font-size: 15px;
+      background: var(--surface);
+      color: var(--text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      width: 18px;
+      height: 18px;
+    }
+
+    .filter-btns {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 10px 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text-secondary);
+      font-family: 'Noto Sans Hebrew', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* Stats */
+    .stats-bar {
+      max-width: 1400px;
+      margin: 0 auto 20px;
+      padding: 0 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stats-bar .count {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .stats-bar .count strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .view-toggle {
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+    }
+
+    .view-btn {
+      padding: 6px 10px;
+      border: none;
+      background: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+    }
+
+    .view-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    .view-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Grid */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 32px 60px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .grid.list-view {
+      grid-template-columns: 1fr;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: all 0.25s ease;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+      border-color: transparent;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .card-title-en {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    .card-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+
+    .badge-recognized {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge-unrecognized {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    .info-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .info-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .icon-capital { background: #ede9fe; color: #7c3aed; }
+    .icon-founded { background: #fce7f3; color: #db2777; }
+    .icon-leader { background: #dbeafe; color: #2563eb; }
+    .icon-since { background: #fff7ed; color: #ea580c; }
+    .icon-election { background: #d1fae5; color: #059669; }
+    .icon-map { background: #fef2f2; color: #dc2626; }
+
+    .map-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      padding: 8px 14px;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--accent);
+      font-family: 'Noto Sans Hebrew', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      width: fit-content;
+    }
+
+    .map-link:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .map-link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .election-past {
+      color: #dc2626;
+      font-weight: 600;
+    }
+
+    .election-past-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      color: #dc2626;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+
+    .election-soon {
+      color: #ea580c;
+      font-weight: 600;
+    }
+
+    .info-label {
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .info-value {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .info-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* continent tag on card */
+    .continent-tag {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .continent-africa { background: #f59e0b; }
+    .continent-asia { background: #ef4444; }
+    .continent-europe { background: #3b82f6; }
+    .continent-north-america { background: #10b981; }
+    .continent-south-america { background: #8b5cf6; }
+    .continent-oceania { background: #06b6d4; }
+
+    /* List view card */
+    .list-view .card {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      align-items: center;
+      padding: 16px 24px;
+      gap: 16px;
+    }
+
+    .list-view .card-header {
+      margin-bottom: 0;
+    }
+
+    .list-view .card-info {
+      display: contents;
+    }
+
+    .list-view .info-row {
+      justify-content: flex-start;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+
+    .empty-state p {
+      font-size: 16px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-inner, .controls, .stats-bar, .container {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-box {
+        min-width: unset;
+      }
+
+      .filter-btns {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 4px;
+      }
+
+      .list-view .card {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .header h1 {
+        font-size: 22px;
+      }
+    }
+
+    /* Scroll to top */
+    .scroll-top {
+      position: fixed;
+      bottom: 28px;
+      left: 28px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      z-index: 50;
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .scroll-top svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      animation: fadeIn 0.3s ease forwards;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <h1>מדינות העולם</h1>
+      <p>מידע מקיף על כל מדינות העולם - כולל מדינות שאינן מוכרות ע"י האו"ם</p>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="search-box">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+      </svg>
+      <input type="text" id="search" placeholder="חיפוש מדינה...">
+    </div>
+    <div class="filter-btns" id="filters">
+      <button class="filter-btn active" data-filter="all">הכל</button>
+      <button class="filter-btn" data-filter="אפריקה">אפריקה</button>
+      <button class="filter-btn" data-filter="אסיה">אסיה</button>
+      <button class="filter-btn" data-filter="אירופה">אירופה</button>
+      <button class="filter-btn" data-filter="צפון אמריקה">צפון אמריקה</button>
+      <button class="filter-btn" data-filter="דרום אמריקה">דרום אמריקה</button>
+      <button class="filter-btn" data-filter="אוקיאניה">אוקיאניה</button>
+      <button class="filter-btn" data-filter="unrecognized">לא מוכרות</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="count"><strong id="count">0</strong> מדינות</div>
+    <div class="view-toggle">
+      <button class="view-btn active" id="gridBtn" onclick="setView('grid')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1-2.25-2.25v-2.25Z" />
+        </svg>
+      </button>
+      <button class="view-btn" id="listBtn" onclick="setView('list')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="grid" id="grid"></div>
+    <div class="empty-state" id="empty" style="display:none">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+      </svg>
+      <p>לא נמצאו מדינות התואמות לחיפוש</p>
+    </div>
+  </div>
+
+  <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+    </svg>
+  </button>
+
+  <script src="data.js"></script>
+  <script>
+    const grid = document.getElementById('grid');
+    const searchInput = document.getElementById('search');
+    const countEl = document.getElementById('count');
+    const emptyEl = document.getElementById('empty');
+    const scrollTopBtn = document.getElementById('scrollTop');
+
+    let currentFilter = 'all';
+    let currentView = 'grid';
+
+    function getContinentClass(continent) {
+      const map = {
+        'אפריקה': 'continent-africa',
+        'אסיה': 'continent-asia',
+        'אירופה': 'continent-europe',
+        'צפון אמריקה': 'continent-north-america',
+        'דרום אמריקה': 'continent-south-america',
+        'אוקיאניה': 'continent-oceania',
+      };
+      return map[continent] || '';
+    }
+
+    function getElectionStatus(elections) {
+      const year = parseInt(elections);
+      if (isNaN(year)) return { cls: '', badge: '' };
+      const currentYear = new Date().getFullYear();
+      if (year < currentYear) return { cls: 'election-past', badge: '<span class="election-past-badge">עברו</span>' };
+      if (year === currentYear) return { cls: 'election-soon', badge: '' };
+      return { cls: '', badge: '' };
+    }
+
+    function renderCard(c, index) {
+      const delay = Math.min(index * 20, 400);
+      const elStatus = getElectionStatus(c.nextElections);
+      return `
+        <div class="card" style="animation-delay: ${delay}ms">
+          <div class="continent-tag ${getContinentClass(c.continent)}"></div>
+          <div class="card-header">
+            <div>
+              <div class="card-title">${c.name}</div>
+              <div class="card-title-en">${c.nameEn}</div>
+            </div>
+            <span class="card-badge ${c.unRecognized ? 'badge-recognized' : 'badge-unrecognized'}">
+              ${c.unRecognized ? 'מוכרת' : 'לא מוכרת'}
+            </span>
+          </div>
+          <div class="card-info">
+            <div class="info-row">
+              <div class="info-icon icon-capital">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                </svg>
+              </div>
+              <div class="info-text">
+                <span class="info-label">עיר בירה</span>
+                <span class="info-value">${c.capital}</span>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon icon-founded">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                </svg>
+              </div>
+              <div class="info-text">
+                <span class="info-label">שנת הקמה</span>
+                <span class="info-value">${c.founded}</span>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon icon-leader">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+              </div>
+              <div class="info-text">
+                <span class="info-label">${c.leaderTitle}</span>
+                <span class="info-value">${c.leader}</span>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon icon-since">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </div>
+              <div class="info-text">
+                <span class="info-label">בשלטון מאז</span>
+                <span class="info-value">${c.leaderSince}</span>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon icon-election">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.745 3.745 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                </svg>
+              </div>
+              <div class="info-text">
+                <span class="info-label">בחירות הבאות</span>
+                <span class="info-value ${elStatus.cls}">${c.nextElections} ${elStatus.badge}</span>
+              </div>
+            </div>
+            <a class="map-link" href="https://www.google.com/maps/search/${encodeURIComponent(c.capital + ' capital')}" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
+              </svg>
+              הצג במפות Google
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    function render() {
+      const query = searchInput.value.trim().toLowerCase();
+      let filtered = countries;
+
+      if (currentFilter === 'unrecognized') {
+        filtered = filtered.filter(c => !c.unRecognized);
+      } else if (currentFilter !== 'all') {
+        filtered = filtered.filter(c => c.continent === currentFilter);
+      }
+
+      if (query) {
+        filtered = filtered.filter(c =>
+          c.name.toLowerCase().includes(query) ||
+          c.nameEn.toLowerCase().includes(query) ||
+          c.capital.toLowerCase().includes(query) ||
+          c.leader.toLowerCase().includes(query)
+        );
+      }
+
+      countEl.textContent = filtered.length;
+      grid.className = currentView === 'list' ? 'grid list-view' : 'grid';
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyEl.style.display = 'block';
+      } else {
+        emptyEl.style.display = 'none';
+        grid.innerHTML = filtered.map((c, i) => renderCard(c, i)).join('');
+      }
+    }
+
+    // Filters
+    document.getElementById('filters').addEventListener('click', e => {
+      if (!e.target.classList.contains('filter-btn')) return;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      currentFilter = e.target.dataset.filter;
+      render();
+    });
+
+    // Search
+    searchInput.addEventListener('input', render);
+
+    // View toggle
+    function setView(view) {
+      currentView = view;
+      document.getElementById('gridBtn').classList.toggle('active', view === 'grid');
+      document.getElementById('listBtn').classList.toggle('active', view === 'list');
+      render();
+    }
+
+    // Scroll to top
+    window.addEventListener('scroll', () => {
+      scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    // Init
+    render();
+  </script>
+</body>
+</html>
