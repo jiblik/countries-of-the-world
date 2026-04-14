@@ -645,6 +645,7 @@
     <div class="header-inner">
       <h1>מדינות העולם</h1>
       <p>מידע מקיף על כל מדינות העולם - כולל מדינות שאינן מוכרות ע"י האו"ם</p>
+      <p id="update-status" style="font-size:11px;margin-top:4px;transition:opacity 0.5s"></p>
     </div>
   </header>
 
@@ -700,6 +701,7 @@
   </button>
 
   <script src="data.js"></script>
+  <script src="wikidata.js"></script>
   <script>
     const grid = document.getElementById('grid');
     const searchInput = document.getElementById('search');
@@ -872,6 +874,11 @@
 
     // Init
     render();
+
+    // Live update from Wikidata
+    updateCountriesFromWikidata().then(updated => {
+      if (updated > 0) render();
+    });
   </script>
 </body>
 </html>
